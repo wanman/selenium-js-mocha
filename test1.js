@@ -3,7 +3,6 @@ var assert = require('chai').assert,
     test = require('selenium-webdriver/testing'),
     webdriver = require('selenium-webdriver'),
     should = require('should'),
-    done = require('done'),
     url = 'https://';
 
 // Our test
