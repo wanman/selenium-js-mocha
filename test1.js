@@ -1,9 +1,9 @@
-// Load dependecies
 var assert = require('chai').assert,
     test = require('selenium-webdriver/testing'),
     webdriver = require('selenium-webdriver'),
     should = require('should'),
     url = 'https://';
+
 
 // Our test
 test.describe('Drone Deploy - ', function() {
@@ -28,24 +28,12 @@ test.describe('Drone Deploy - ', function() {
         driver.quit();
     });
 
-    test.it('Create account', function() {
+    test.it('Sign In', function() {
         // Set timeout to 15 seconds
         this.timeout(15000);
 
-        //generates random email
-        var chars = 'abcdefghijklmnopqrstuvwxyz';
-        var string = '';
-        for(var i = 0; i < 4; i++) {
-            string += chars[Math.floor(Math.random() * chars.length)];
-        }
-        console.log('Generated email is: ' + string + '@mail.com');
-
-        var firstName = 'Kelvin',
-            lastName = 'Reid',
-            email = (string + '@mail.com'),
-            company = 'Test Company',
-            phoneNumber = '757-555-5555',
-            password = 'Qwerty123!';
+        var email = 'kelvin+interview@example.com',
+            password = 'XcXLVTkh$TToAF6';
 
         // Get driver
         var driver = new webdriver.Builder()
@@ -53,53 +41,17 @@ test.describe('Drone Deploy - ', function() {
         .build();
 
         // Go to URL
-        driver.get('http://www.dronedeploy.com');
+        driver.get('https://www.dronedeploy.com/app2/signin');
 
-        // clicks signup button
-        driver.findElement(webdriver.By.xpath('//*[@id="inner-wrap"]/nav[1]/div/ul/li[7]/a')).click()
-        .then(() => {
-            //input first name
-            driver.findElement(webdriver.By.id('name')).sendKeys(firstName);
-        })
-        .then(() => {
-            //input last name
-            driver.findElement(webdriver.By.id('last')).sendKeys(lastName);
-        })
-        .then(() => {
-            //input username
-            driver.findElement(webdriver.By.id('username')).sendKeys(email);
-        })
-        .then(() => {
-            //input organization
-            driver.findElement(webdriver.By.id('company')).sendKeys(company);
-        })
-        .then(() => {
-            //input phone number
-            driver.findElement(webdriver.By.id('phone')).sendKeys(phoneNumber);
-        })
-        .then(() => {
-            // click the industry dropdown
-            driver.findElement(webdriver.By.className('select-dropdown')).click();
-        })
-        .then(() => {
-            // finds the options
-            driver.findElement(webdriver.By.className('dropdown-content select-dropdown active')).click();
-        })
-        .then(() => {
-            // selects industry
-            driver.findElement(webdriver.By.className('selected')).click();
-        })
+        // clicks signin button
+        driver.findElement(webdriver.By.id('sign-in-email')).sendKeys(email)
         .then(() => {
             //input password
-            driver.findElement(webdriver.By.id('password')).sendKeys(password);
-        })
-        .then(() => {
-            //confirm password
-            driver.findElement(webdriver.By.id('confirm_password')).sendKeys(password);
+            driver.findElement(webdriver.By.id('sign-in-password')).sendKeys(password);
         })
         .then(() => {
             //submits the form
-            driver.findElement(webdriver.By.id('submit')).click();
+            driver.findElement(webdriver.By.id('sign-in-dd-button')).click();
         })
         .then(() => {
             // wait for the dashboard to load and get the URL
@@ -110,8 +62,19 @@ test.describe('Drone Deploy - ', function() {
             // verify the URL contains dashboard
             should(url).containEql('/app2/dashboard');
         })
+        .then(() => {
+            driver.findElement(webdriver.By.xpath('/html/body/app/div/sidebar/mat-sidenav-container/mat-sidenav/div[1]/div/dashboard/section/folder-dashboard/div[2]/record-manager[3]/div/record-card/div')).click();
+        })
+        .then(() => {
+            driver.findElement(webdriver.By.xpath('/html/body/app/div/sidebar/mat-sidenav-container/mat-sidenav/div[1]/div/data/data-overview/sidebar-section[3]/div/annotations/section/annotation-controls/section[2]/annotation-button[1]')).click();
+        })
+        .then(() => {
+            driver.actions({bridge: true}).move({x: 0, y: 0, origin: 'leaflet-tile_leaflet-tile-loaded'}).perform();
+        })
+
+
 
         // Quit webdriver
-        driver.quit();
+        //driver.quit();
     });
 });
